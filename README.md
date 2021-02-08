@@ -235,4 +235,103 @@ be826cb462c2   alpine:latest   "ping 127.0.0.1"   20 minutes ago   Up 20 minutes
 
 <img src="contrapp.png">
 
+# First docker image build 
+
+```
+❯ docker  build  -t  ashupython:v1  .
+Sending build context to Docker daemon     64kB
+Step 1/7 : FROM python
+ ---> e32be9a6f71f
+Step 2/7 : MAINTAINER  ashutoshh@linux.com , 9509957594
+ ---> Running in 493ffa835680
+Removing intermediate container 493ffa835680
+ ---> 6bba0fa18024
+Step 3/7 : RUN  mkdir  /mycode
+ ---> Running in af9bbeb11a79
+Removing intermediate container af9bbeb11a79
+ ---> fe0d18362664
+Step 4/7 : COPY while.py /mycode/while.py
+ ---> e706bbab2355
+Step 5/7 : WORKDIR /mycode
+ ---> Running in 9eb52edaf84d
+Removing intermediate container 9eb52edaf84d
+ ---> ebb5301b8331
+Step 6/7 : RUN chmod +x while.py
+ ---> Running in 0475126350f1
+Removing intermediate container 0475126350f1
+ ---> 0e71db017c95
+Step 7/7 : CMD ["python","while.py"]
+ ---> Running in 296a514b7245
+Removing intermediate container 296a514b7245
+ ---> 3dffd29ea06b
+Successfully built 3dffd29ea06b
+Successfully tagged ashupython:v1
+
+```
+
+## creating container from last build image
+
+```
+❯ docker  run --name ashuc2 -it -d  ashupython:v1
+db1b7b70b69328713199c3ee93d589e565ef0c0b5c4353611f71e883cb5a99dc
+❯ docker  ps
+CONTAINER ID   IMAGE           COMMAND             CREATED         STATUS         PORTS     NAMES
+db1b7b70b693   ashupython:v1   "python while.py"   5 seconds ago   Up 3 seconds             ashuc2
+
+```
+
+## checking output of parent process
+
+```
+ docker  logs -f  ashuc2 
+```
+
+## MUlti stage dockerfile
+
+```
+❯ ls
+Dockerfile        README.md         custom.dockerfile while.py
+❯ docker  build  -t  ashupython:distrov1  -f  custom.dockerfile  .
+Sending build context to Docker daemon  65.54kB
+Step 1/10 : FROM python as Builder
+ ---> e32be9a6f71f
+Step 2/10 : MAINTAINER  ashutoshh@linux.com , 9509957594
+ ---> Using cache
+ ---> 6bba0fa18024
+Step 3/10 : RUN  mkdir  /mycode
+ ---> Using cache
+ ---> fe0d18362664
+Step 4/10 : COPY while.py /mycode/while.py
+ ---> Using cache
+ ---> 6f120757ed58
+Step 5/10 : WORKDIR /mycode
+ ---> Using cache
+ ---> a1c86ceaf548
+Step 6/10 : RUN chmod +x while.py
+ ---> Using cache
+ ---> 4dc04d30269d
+Step 7/10 : FROM gcr.io/distroless/python3
+latest: Pulling from distroless/python3
+9e4425256ce4: Pull complete 
+a3e61620654b: Pull complete 
+e708be98c58f: Pull complete 
+c2442dd585ef: Pull complete 
+Digest: sha256:58087520b3c929fe77e1ef3fc95062dbe80bbda265e0e7966c4997c71a9636ea
+Status: Downloaded newer image for gcr.io/distroless/python3:latest
+ ---> 868c100eaedc
+Step 8/10 : COPY --from=Builder /mycode /mycode
+ ---> d5eff98d6396
+Step 9/10 : WORKDIR /mycode
+ ---> Running in 803198074dfd
+Removing intermediate container 803198074dfd
+ ---> 2c74f9e4edef
+Step 10/10 : CMD ["python","while.py"]
+ ---> Running in aea311af241a
+Removing intermediate container aea311af241a
+ ---> 0c3b38a4fa4e
+Successfully built 0c3b38a4fa4e
+Successfully tagged ashupython:distrov1
+
+```
+
 
