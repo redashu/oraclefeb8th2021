@@ -350,3 +350,45 @@ Now copy aa.txt into second container
 ```
 
 
+# after build creating container 
+
+```
+ docker run -d --name ashuweb -p  2211:80  ashuol:httpdv1
+3062504b51ac16c86ecd78d7146d8bfe0199c6ac6a06fef62e15681d7a565ae4
+❯ docker ps
+CONTAINER ID   IMAGE                 COMMAND                  CREATED          STATUS             PORTS                  NAMES
+3062504b51ac   ashuol:httpdv1        "httpd -DFOREGROUND"     5 seconds ago    Up 2 seconds       0.0.0.0:2211->80/tcp   ashuweb
+0d5d7bcf6e9e   viswa-webapp1:v1      "httpd -DFOREGROUND"     3 minutes ago    Up 3 minutes       80/tcp   
+
+```
+
+## image registry to push docker images
+
+<img src="di.png">
+
+## image push to docker hub 
+
+```
+❯ docker  tag   ashuol:httpdv1    dockerashu/ashuol:httpd1
+❯ docker images  |   grep -i ashu
+dockerashu/ashuol           httpd1     b42d5d0662b0   31 minutes ago      344MB
+ashuol                      httpdv1    b42d5d0662b0   31 minutes ago      344MB
+ashupython                  distrov2   1b67d947dab9   About an hour ago   49.6MB
+ashupython                  distrov1   0c3b38a4fa4e   About an hour ago   49.6MB
+ashupython                  v1         07862c1d3e10   2 hours ago         885MB
+❯ docker login  -u dockerashu
+Password: 
+Login Succeeded
+❯ docker push dockerashu/ashuol:httpd1
+The push refers to repository [docker.io/dockerashu/ashuol]
+2b78f5bac9d7: Pushed 
+845c43d28e2a: Pushed 
+d0054f212bd1: Mounted from library/oraclelinux 
+httpd1: digest: sha256:f67f28d7b2b0986c709ed31818fca81ec9abc4191565e44aef3fdcedd4c22184 size: 950
+❯ docker logout  -u dockerashu
+unknown shorthand flag: 'u' in -u
+❯ docker logout
+Removing login credentials for https://index.docker.io/v1/
+
+```
+
