@@ -334,4 +334,19 @@ Successfully tagged ashupython:distrov1
 
 ```
 
+# Docker 
+
+Docker  assignment : 
+
+```
+Q1.   create  two containers and do the given things 
+
+Image must be alpine 
+Name of container <yourname>c1 & <yourname>c2
+Parent process you can choose accordingly 
+Create two files in container1 named aa.txt & bb.txt 
+Now copy aa.txt into second container
+
+```
+
 
