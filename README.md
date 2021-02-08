@@ -1,1 +1,6 @@
-# oraclefeb8th2021
+# Day1 starting 
+
+## understanding OS kernel 
+
+<img src="kernel.png">
+
