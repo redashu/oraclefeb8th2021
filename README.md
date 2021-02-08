@@ -179,6 +179,51 @@ c6e15a538aa4   alpine          "ping 127.0.0.1"   4 seconds ago        Up 3 seco
  6387  docker  start  ashuc1
  6388  docker  ps
 
+```
+
+## child process for container 
+
+```
+docker  exec  -d  ashuc1  ping www.google.com   
+
+```
+
+## accessing container shell
+
+```
+❯ docker  exec   -it  ashuc1   sh
+/ # 
+/ # 
+/ # uname 
+Linux
+/ # uname -r
+4.14.214-160.339.amzn2.x86_64
+/ # cat  /etc/os-release 
+NAME="Alpine Linux"
+ID=alpine
+VERSION_ID=3.13.1
+PRETTY_NAME="Alpine Linux v3.13"
+HOME_URL="https://alpinelinux.org/"
+BUG_REPORT_URL="https://bugs.alpinelinux.org/"
+/ # exit
+
+
+```
+## removing container persistently 
+
+```
+6397  docker  exec   -it  ashuc1   sh 
+❯ docker kill ashuc1
+ashuc1
+❯ docker  rm  ashuc1
+ashuc1
+❯ docker  ps -a
+CONTAINER ID   IMAGE           COMMAND            CREATED          STATUS                      PORTS     NAMES
+58e5379f8496   alpine:latest   "ping 127.0.0.1"   10 minutes ago   Exited (0) 10 minutes ago             blissful_leavitt
+8c1451dfd81b   alpine          "ping 127.0.0.1"   15 minutes ago   Up 4 minutes                          vinodalphine
+be826cb462c2   alpine:latest   "ping 127.0.0.1"   20 minutes ago   Up 20 minutes                         interesting_swartz
+514b58522e78   alpine:latest   "ping 127.0.0.1"   22 minutes ago   Exited (0) 22 minutes ago             jovial_banach
+
 
 ```
 
