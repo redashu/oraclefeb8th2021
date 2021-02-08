@@ -227,4 +227,12 @@ be826cb462c2   alpine:latest   "ping 127.0.0.1"   20 minutes ago   Up 20 minutes
 
 ```
 
+## Docker quick revision 
+
+<img src="rev.png">
+
+## Containerization of your app 
+
+<img src="contrapp.png">
+
 
