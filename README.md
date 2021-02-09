@@ -107,4 +107,32 @@ Loaded image: alpine:latest
  
 ```
 
+# Image registry 
+
+<img src="reg.png">
+
+## SYstemD support in Container 
+
+```
+[root@5cfcc08626f5 /]# systemctl start httpd
+System has not been booted with systemd as init system (PID 1). Can't operate.
+Failed to connect to bus: Host is down
+
+```
+## MUlti app docker images
+
+```
+ docker  run --name ashuc1 -d -p 1155:80  dockerashu/ows:v001
+a198d56e465a483e7a6d02e3214ee6880718be07e1a8ad69ba26ae8ea54dbdfb
+❯ docker  ps
+CONTAINER ID   IMAGE                 COMMAND                  CREATED         STATUS         PORTS                  NAMES
+a198d56e465a   dockerashu/ows:v001   "./docker-entrypoint…"   6 seconds ago   Up 4 seconds   0.0.0.0:1155->80/tcp   ashuc1
+❯ docker  exec -it ashuc1  env
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+HOSTNAME=a198d56e465a
+TERM=xterm
+x=app
+HOME=/root
+
+```
 
