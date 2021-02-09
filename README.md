@@ -348,3 +348,52 @@ lo        Link encap:Local Loopback
 
 <img src="overlay.png">
 
+
+# Storage 
+
+<img src="st.png">
+
+## changing default docker engine storage
+
+```
+[root@ip-172-31-93-149 ~]# cd /etc/sysconfig/
+[root@ip-172-31-93-149 sysconfig]# ls
+acpid       clock     docker          i18n        man-db      network-scripts  readonly-root  rsyslog    sysstat
+atd         console   docker-storage  init        modules     nfs              rpc-rquotad    run-parts  sysstat.ioconf
+authconfig  cpupower  grub            irqbalance  netconsole  raid-check       rpcbind        selinux
+chronyd     crond     htcacheclean    keyboard    network     rdisc            rsyncd         sshd
+[root@ip-172-31-93-149 sysconfig]# vim docker
+[root@ip-172-31-93-149 sysconfig]# cat  docker
+# The max number of open files for the daemon itself, and all
+# running containers.  The default value of 1048576 mirrors the value
+# used by the systemd service unit.
+DAEMON_MAXFILES=1048576
+
+# Additional startup options for the Docker daemon, for example:
+# OPTIONS="--ip-forward=true --iptables=true"
+# By default we limit the number of open files per container
+OPTIONS="--default-ulimit nofile=1024:4096 -H tcp://0.0.0.0:2375 -g  /mnt/oracle"
+
+# How many seconds the sysvinit script waits for the pidfile to appear
+# when starting the daemon.
+DAEMON_PIDFILE_TIMEOUT=10
+[root@ip-172-31-93-149 sysconfig]# systemctl daemon-reload 
+[root@ip-172-31-93-149 sysconfig]# systemctl restart docker 
+
+```
+
+## Restoring data from old to new location 
+
+```
+ rsync -avp /var/lib/docker/  /mnt/oracle/
+ systemctl restart docker 
+ 
+```
+## engine storage 
+
+[storage](https://github.com/redashu/docker/tree/master/docker_storage)
+
+# Container storage 
+
+<img src="stc.png">
+
