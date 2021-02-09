@@ -133,3 +133,206 @@ Failed to connect to bus: Host is down
 
 ```
 
+# Docker NEtworking 
+
+<img src="dnet.png">
+
+## checking default bridge 
+
+```
+❯ docker network ls
+NETWORK ID     NAME      DRIVER    SCOPE
+61ab55f99b48   bridge    bridge    local
+b4749a3c3fb4   host      host      local
+983bf0753fea   none      null      local
+❯ docker network inspect  bridge
+[
+    {
+        "Name": "bridge",
+        "Id": "61ab55f99b48a24ee2b489ac9dbc7affc5ad56b85842fee9499b6846105bd75d",
+        "Created": "2021-02-09T19:23:56.031277229Z",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": null,
+            "Config": [
+                {
+                    "Subnet": "172.17.0.0/16",
+                    "Gateway": "172.17.0.1"
+                }
+            ]
+        },
+        "Internal": false,
+        "Attachable": false,
+        "Ingress": false,
+        "ConfigFrom": {
+            "Network": ""
+        },
+        "ConfigOnly": false,
+        "Containers": {},
+        "Options": {
+            "com.docker.network.bridge.default_bridge": "true",
+            "com.docker.network.bridge.enable_icc": "true",
+            "com.docker.network.bridge.enable_ip_masquerade": "true",
+            "com.docker.network.bridge.host_binding_ipv4": "0.0.0.0",
+            "com.docker.network.bridge.name": "docker0",
+            "com.docker.network.driver.mtu": "1500"
+        },
+        "Labels": {}
+    }
+]
+
+```
+## checking ip of running container 
+
+```
+❯ docker  inspect  x1  |   grep -i ipaddress
+            "SecondaryIPAddresses": null,
+            "IPAddress": "172.17.0.2",
+                    "IPAddress": "172.17.0.2",
+                    
+ ```
+ 
+ ## NAT 
+ 
+ <img src="nat.png">
+ 
+ ## Port forwarding 
+ 
+ <img src="pf.png">
+ 
+ ## Creating custom bridge with automatic network series 
+ 
+ ```
+ ❯ docker  network  create   ashubr1
+fa4005bb0accb376625e73b47e71c1e3731a1fe54c4abeb1102fab0cea9af7ab
+❯ docker  network  ls
+NETWORK ID     NAME      DRIVER    SCOPE
+fa4005bb0acc   ashubr1   bridge    local
+61ab55f99b48   bridge    bridge    local
+b4749a3c3fb4   host      host      local
+983bf0753fea   none      null      local
+❯ docker  network  inspect  ashubr1
+[
+    {
+        "Name": "ashubr1",
+        "Id": "fa4005bb0accb376625e73b47e71c1e3731a1fe54c4abeb1102fab0cea9af7ab",
+        "Created": "2021-02-09T21:40:14.077132807Z",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": {},
+            "Config": [
+                {
+                    "Subnet": "172.18.0.0/16",
+                    "Gateway": "172.18.0.1"
+                    
+   ```
+  
+## container 
+
+```
+6785  docker  network  inspect  ashubr1 
+ 6786  docker run -d --name br1x1    --network ashubr1   alpine ping 127.0.0.2 
+ 6787  docker run -d --name br1x2    --network ashubr1   alpine ping 127.0.0.2 
+ 6788  docker  network  inspect  ashubr1 
+
+```
+## custom bridge with custom subnet 
+
+```
+6795  docker network create  ashubr2  --subnet  192.167.0.0/16 
+ 6796  docker network ls
+ 6797  docker  run -d --name br2x1 --network  ashubr2  alpine ping 127.0.0.1 
+ 6798  docker exec -it  br2x1 sh 
+ 6799  docker  run -d --name br2x2  --network  ashubr2  --ip 192.167.0.100 alpine ping 127.0.0.1 
+ 6800  docker exec -it  br2x2 sh 
+ 
+ ```
+ ## container with multiple bridge 
+ 
+ ```
+ ❯ docker network connect  ashubr2  br1x1
+❯ docker  exec -it  br1x1  sh
+/ # ifconfig 
+eth0      Link encap:Ethernet  HWaddr 02:42:AC:12:00:02  
+          inet addr:172.18.0.2  Bcast:172.18.255.255  Mask:255.255.0.0
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:27 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:19 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:2110 (2.0 KiB)  TX bytes:1638 (1.5 KiB)
+
+eth1      Link encap:Ethernet  HWaddr 02:42:C0:A7:00:03  
+          inet addr:192.167.0.3  Bcast:192.167.255.255  Mask:255.255.0.0
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:7 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:586 (586.0 B)  TX bytes:0 (0.0 B)
+          
+ ```
+ 
+ ## Disconnect from bridge
+ 
+ ```
+ ❯ docker network disconnect  ashubr2  br1x1
+❯ docker  exec -it  br1x1  sh
+/ # ifconfig 
+eth0      Link encap:Ethernet  HWaddr 02:42:AC:12:00:02  
+          inet addr:172.18.0.2  Bcast:172.18.255.255  Mask:255.255.0.0
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:27 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:19 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:2110 (2.0 KiB)  TX bytes:1638 (1.5 KiB)
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:1920 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:1920 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:160947 (157.1 KiB)  TX bytes:160947 (157.1 KiB)
+          
+          
+  ```
+  
+  ## Network history 
+  
+  ```
+  6782  docker  network  ls
+ 6783  docker  network  create   ashubr1 
+ 6784  docker  network  ls
+ 6785  docker  network  inspect  ashubr1 
+ 6786  docker run -d --name br1x1    --network ashubr1   alpine ping 127.0.0.2 
+ 6787  docker run -d --name br1x2    --network ashubr1   alpine ping 127.0.0.2 
+ 6788  docker  network  inspect  ashubr1 
+ 6789  history
+ 6790  docker  exec -it  br1x1  sh 
+ 6791  history
+ 6792  docker  exec -it  br1x1  sh 
+ 6793  history
+ 6794  docker  exec -it  br1x1  sh 
+ 6795  docker network create  ashubr2  --subnet  192.167.0.0/16 
+ 6796  docker network ls
+ 6797  docker  run -d --name br2x1 --network  ashubr2  alpine ping 127.0.0.1 
+ 6798  docker exec -it  br2x1 sh 
+ 6799  docker  run -d --name br2x2  --network  ashubr2  --ip 192.167.0.100 alpine ping 127.0.0.1 
+ 6800  docker exec -it  br2x2 sh 
+ 6801  history
+ 6802  docker network ls
+ 6803  docker  exec -it  br1x1  sh 
+ 6804  docker network connect  ashubr2  br1x1 
+ 6805  docker  exec -it  br1x1  sh 
+ 6806  history
+ 6807  docker network disconnect  ashubr2  br1x1 
+ 6808  docker  exec -it  br1x1  sh 
+
+
+```
+
