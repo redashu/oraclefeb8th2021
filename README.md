@@ -397,3 +397,60 @@ DAEMON_PIDFILE_TIMEOUT=10
 
 <img src="stc.png">
 
+## Creating volume 
+
+```
+❯ docker volume  create  ashuvol1
+ashuvol1
+❯ docker volume  ls
+DRIVER    VOLUME NAME
+local     ashuvol1
+❯ docker volume  inspect  ashuvol1
+[
+    {
+        "CreatedAt": "2021-02-09T23:18:19Z",
+        "Driver": "local",
+        "Labels": {},
+        "Mountpoint": "/mnt/oracle/volumes/ashuvol1/_data",
+        "Name": "ashuvol1",
+        "Options": {},
+        "Scope": "local"
+    }
+]
+
+
+```
+
+docker run  -it  --name x3  -v  ashuvol1:/ok:ro   centos bash
+
+## Container with No network but shared volume 
+
+```
+❯ docker  network  ls
+NETWORK ID     NAME         DRIVER    SCOPE
+fa4005bb0acc   ashubr1      bridge    local
+e251db264e61   ashubr2      bridge    local
+352c4c3fede0   bridge       bridge    local
+b4749a3c3fb4   host         host      local
+753cf59dcb15   jlrday2br1   bridge    local
+983bf0753fea   none         null      local
+❯ docker  run -it --network none  alpine sh
+/ # ifconfig 
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+/ # ping google.com 
+^C
+/ # exit
+❯ docker  run -it --network none -v  ashuvol1:/mnt/fine  alpine sh
+/ # cd /mnt/fine/
+/mnt/fine # ls
+a.txt  hello  nice   world
+/mnt/fine # 
+
+```
