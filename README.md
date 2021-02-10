@@ -185,3 +185,24 @@ services:
 
 
 ```
+
+# COntainer orchestration engines 
+
+<img src="cont-orch.png">
+
+## K8s more info 
+
+<img src="k8sinfo.png">
+
+## k8s architecture  Pic 1
+
+<img src="k8s1.png">
+
+## k8s arch pic 2
+
+<img src="k8s2.png">
+
+## k8s arch final
+
+<img src="kfinal.png">
+
