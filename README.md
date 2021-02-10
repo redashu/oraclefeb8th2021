@@ -296,3 +296,120 @@ minikube   Ready    control-plane,master   7m30s   v1.20.2
 
 <img src="pod.png">
 
+## POD Desing 
+
+<img src="podd.png">
+
+
+
+# POD 
+
+## Example 1 
+
+```
+apiVersion: v1 # connecting kube-apiserver 
+kind: Pod  # requesting about POd 
+metadata: # more info about pod 
+ name: ashupod-1  # name of Pod 
+spec:
+ containers:  # info about Docker image & container 
+ - image: nginx # image from Docker HUB 
+   name: ashuc1  # name of container 
+   ports: # application port inside container 
+   - containerPort: 80
+   
+```
+## deploying pod 
+
+```
+kubectl apply -f  ashupod.yml
+
+ kubectl get po
+NAME        READY   STATUS    RESTARTS   AGE
+ashupod-1   1/1     Running   0          15m
+ashupod-2   1/1     Running   0          106s
+❯ kubectl get po -o wide
+NAME        READY   STATUS    RESTARTS   AGE    IP           NODE       NOMINATED NODE   READINESS GATES
+ashupod-1   1/1     Running   0          15m    172.17.0.3   minikube   <none>           <none>
+ashupod-2   1/1     Running   0          119s   172.17.0.4   minikube   <none>           <none>
+
+```
+
+## local app access
+
+```
+❯ kubectl  port-forward  ashupod-1  3345:80
+Forwarding from 127.0.0.1:3345 -> 80
+Forwarding from [::1]:3345 -> 80
+Handling connection for 3345
+Handling connection for 3345
+
+```
+
+## Deleting pods 
+
+```
+❯ kubectl  get  po
+NAME        READY   STATUS    RESTARTS   AGE
+ashupod-1   1/1     Running   0          19m
+ashupod-2   1/1     Running   0          5m41s
+❯ kubectl delete  pod  --all
+pod "ashupod-1" deleted
+pod "ashupod-2" deleted
+
+```
+
+## auto generate yaml / json 
+
+```
+❯ kubectl  run   ashupod3  --image=nginx --port 80 --dry-run=client  -o yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: ashupod3
+  name: ashupod3
+spec:
+  containers:
+  - image: nginx
+    name: ashupod3
+    ports:
+    - containerPort: 80
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+❯ kubectl  run   ashupod3  --image=nginx --port 80 --dry-run=client  -o yaml  >pod3.yaml
+❯ kubectl  get  po
+No resources found in default namespace.
+
+```
+
+## 
+
+```
+6980  kubectl  get  nodes
+ 6981  cd  Desktop/mypods
+ 6982  ls
+ 6983  kubectl   get   pods 
+ 6984  kubectl  apply -f  ashupod1.yaml  --dry-run=client 
+ 6985  kubectl  apply -f  ashupod1.yaml  
+ 6986  kubectl  get   pods
+ 6987  history
+ 6988  kubectl  apply -f ashupod1.yaml 
+ 6989  kubectl get  po -w
+ 6990  kubectl get po 
+ 6991  kubectl get po -o wide
+ 6992  kubectl  port-forward  ashupod-1  3345:80 
+ 6993  history
+ 6994  kubectl  get  po 
+ 6995  kubectl delete  pod  --all
+ 6996  kubectl  run   ashupod3  --image=nginx --port 80 --dry-run=client  -o yaml 
+ 6997  kubectl  run   ashupod3  --image=nginx --port 80 --dry-run=client  -o yaml  >pod3.yaml
+ 6998  kubectl  get  po 
+ 6999  kubectl  run   ashupod3  --image=nginx --port 80 --dry-run=client  -o json 
+ 7000  kubectl  run   ashupod3  --image=nginx --port 80 --dry-run=client  -o json   >abc.json 
+ 
+ ````
+ 
