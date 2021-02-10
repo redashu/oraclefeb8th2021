@@ -99,3 +99,89 @@ Removing network composedeploy_default
 
 
 ```
+
+## Example 3 
+
+```
+version: "3.6"
+networks: # to create network 
+ ashubr1234: # name of network with default bridge driver
+volumes: # to create volume 
+ ashuvol123: # name of volume 
+
+services:
+ ashuapp11:
+  image: nginx
+  container_name: xcashu1
+  networks: # for using networks 
+  - ashubr1234
+  volumes: # using volume 
+  - ashuvol123:/mnt/oracle  
+  ports:
+  - 1199:80 
+  
+ ```
+ 
+ ## deployment 
+ 
+ ```
+ ❯ ls
+ashu.yml            docker-compose.yaml
+❯ docker-compose -f  ashu.yml up  -d
+Creating network "composedeploy_ashubr1234" with the default driver
+Creating volume "composedeploy_ashuvol123" with default driver
+Creating xcashu1 ... done
+❯ docker-compose -f  ashu.yml   ps
+ Name                Command               State          Ports        
+-----------------------------------------------------------------------
+xcashu1   /docker-entrypoint.sh ngin ...   Up      0.0.0.0:1199->80/tcp
+❯ docker-compose -f  ashu.yml  down
+Stopping xcashu1 ... done
+Removing xcashu1 ... done
+Removing network composedeploy_ashubr1234
+
+```
+# Example 3 
+
+```
+version: '3.8'
+services:
+  ashujsp1:
+    image: dockerashu/ashujava:webappv1 # name of image i want to build
+    build: # to build image from Dockerfile 
+      context: . # location of Dockerfile 
+      dockerfile: Dockerfile # name of dockerfile 
+    container_name: ashujavac1
+    ports:
+      - 5566:8080 
+    restart: always 
+    
+  ```
+  
+  ## compsoe command history 
+  
+  ```
+  6925  docker-compose -f  ashu.yml up  -d
+ 6926  docker-compose -f  ashu.yml   ps
+ 6927  docker-compose -f  ashu.yml  down
+ 6928  history
+ 6929  docker volume  ls
+ 6930  docker volume  inspect  ashuvol2  
+ 6931* ssh -i Downloads/macdocker.pem ec2-user@3.210.139.97
+ 6932  history
+ 6933  docker volume ls
+ 6934  docker  pull tomcat 
+ 6935  docker  inspect  tomcat 
+ 6936  history
+ 6937  ls
+ 6938  cd  javawebapp-master
+ 6939  ls
+ 6940  docker-compose up -d 
+ 6941  docker-compose ps
+ 6942  docker-compose down 
+ 6943  docker-compose down --remove-orphans
+ 6944  docker-compose up  --build   -d  
+ 6945  docker-compose ps
+
+
+```
