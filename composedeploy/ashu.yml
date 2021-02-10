@@ -1,0 +1,16 @@
+version: "3.6"
+networks: # to create network 
+ ashubr1234: # name of network with default bridge driver
+volumes: # to create volume 
+ ashuvol123: # name of volume 
+
+services:
+ ashuapp11:
+  image: nginx
+  container_name: xcashu1
+  networks: # for using networks 
+  - ashubr1234
+  volumes: # using volume 
+  - ashuvol123:/mnt/oracle  
+  ports:
+  - 1199:80 

@@ -1,0 +1,16 @@
+version: "3.8" # compose file version
+services: # to define one or more container applications
+ ashuapp1: # name of app 
+  image: alpine # image 
+  container_name: ashuc1 # name of container 
+  command: ping 127.0.0.1 # parent process
+  restart: always  # restart policy 
+
+ ashuapp2: # second app
+  image: nginx
+  container_name: ashuc2
+  ports:
+   - "1122:80" # - means array in YAML 
+  restart: always # best practise to use (optional)
+
+# docker run -d --name ashuc2 -p 1122:80 --restart always nginx 

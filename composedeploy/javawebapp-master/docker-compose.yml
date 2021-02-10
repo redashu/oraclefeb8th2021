@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  ashujsp1:
+    image: dockerashu/ashujava:webappv1 # name of image i want to build
+    build: # to build image from Dockerfile 
+      context: . # location of Dockerfile 
+      dockerfile: Dockerfile # name of dockerfile 
+    container_name: ashujavac1
+    ports:
+      - 5566:8080 
+    restart: always 
