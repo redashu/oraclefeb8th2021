@@ -206,3 +206,93 @@ services:
 
 <img src="kfinal.png">
 
+# k8s cluster deployment 
+
+<img src="cluster.png">
+
+## Minikube install on Mac OS 
+
+```
+❯ curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-darwin-amd64
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 52.6M  100 52.6M    0     0  8843k      0  0:00:06  0:00:06 --:--:-- 12.4M
+❯ sudo install minikube-darwin-amd64 /usr/local/bin/minikube
+Password:
+❯ minikube version
+minikube version: v1.17.1
+commit: 043bdca07e54ab6e4fc0457e3064048f34133d7e
+
+```
+
+## docker driver 
+
+```
+https://minikube.sigs.k8s.io/docs/drivers/
+
+```
+
+## MInikube based cluster 
+
+```
+❯ minikube start --driver=docker
+😄  minikube v1.17.1 on Darwin 11.2.1
+✨  Using the docker driver based on user configuration
+👍  Starting control plane node minikube in cluster minikube
+🔥  Creating docker container (CPUs=2, Memory=1990MB) ...
+🐳  Preparing Kubernetes v1.20.2 on Docker 20.10.2 ...
+    ▪ Generating certificates and keys ...
+    ▪ Booting up control plane ...
+    ▪ Configuring RBAC rules ...
+🔎  Verifying Kubernetes components...
+🌟  Enabled addons: storage-provisioner, default-storageclass
+🏄  Done! kubectl is now configured to use "minikube" cluster and "default" namespace by default
+❯ minikube status
+minikube
+type: Control Plane
+host: Running
+kubelet: Running
+apiserver: Running
+kubeconfig: Configured
+timeToStop: Nonexistent
+
+```
+
+## kubectl as the client of kubernetes got installed 
+
+```
+❯ curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/darwin/amd64/kubectl"
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   161  100   161    0     0    509      0 --:--:-- --:--:-- --:--:--   509
+100 44.0M  100 44.0M    0     0  6350k      0  0:00:07  0:00:07 --:--:-- 10.1M
+❯ chmod +x ./kubectl
+❯ sudo mv ./kubectl /usr/local/bin/kubectl
+Password:
+❯ kubectl version --client
+Client Version: version.Info{Major:"1", Minor:"20", GitVersion:"v1.20.2", GitCommit:"faecb196815e248d3ecfb03c680a4507229c2a56", GitTreeState:"clean", BuildDate:"2021-01-13T13:28:09Z", GoVersion:"go1.15.5", Compiler:"gc", Platform:"darwin/amd64"}
+
+```
+
+## 
+
+```
+❯ kubectl  version
+Client Version: version.Info{Major:"1", Minor:"20", GitVersion:"v1.20.2", GitCommit:"faecb196815e248d3ecfb03c680a4507229c2a56", GitTreeState:"clean", BuildDate:"2021-01-13T13:28:09Z", GoVersion:"go1.15.5", Compiler:"gc", Platform:"darwin/amd64"}
+Server Version: version.Info{Major:"1", Minor:"20", GitVersion:"v1.20.2", GitCommit:"faecb196815e248d3ecfb03c680a4507229c2a56", GitTreeState:"clean", BuildDate:"2021-01-13T13:20:00Z", GoVersion:"go1.15.5", Compiler:"gc", Platform:"linux/amd64"}
+❯ 
+❯ kubectl  cluster-info
+Kubernetes control plane is running at https://127.0.0.1:55004
+KubeDNS is running at https://127.0.0.1:55004/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+❯ 
+❯ kubectl get  nodes
+NAME       STATUS   ROLES                  AGE     VERSION
+minikube   Ready    control-plane,master   7m30s   v1.20.2
+
+```
+## application deployment in k8s
+
+<img src="pod.png">
+
