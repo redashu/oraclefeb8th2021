@@ -433,4 +433,26 @@ x1ashu   NodePort   10.103.213.195   <none>        80:32401/TCP   5s
 ```
 
 
+# OCIR image deployment in k8s 
+
+```
+ kubectl  run  mypod1  --image=phx.ocir.io/axmbtg8judkl/alpine:v1  --command  ping fb.com  --dry-run=client -o yaml >p.yml
+ 
+```
+# secret in k8s
+
+<img src="ocr.png">
+
+## creating secret for OCR
+
+```
+kubectl  create  secret   docker-registry  ashusec  --docker-server=phx.ocir.io  --docker-username=avxmbtg8jujkkkdkl/learntechbyme@gmail.com   --docker-password="l}maIssa5O]tONfgdfhdhfhfgfsdfq<kgs;0J[8"  -n ashu-space
+secret/ashusec created
+❯ 
+❯ kubectl  get secret
+NAME                  TYPE                                  DATA   AGE
+ashusec               kubernetes.io/dockerconfigjson        1      10s
+default-token-zf29w   kubernetes.io/service-account-token   3      79m
+
+```
 
