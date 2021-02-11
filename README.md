@@ -120,6 +120,70 @@ Handling connection for 1244
 
 <img src="stype.png">
 
+# checking label 
+
+```
+❯ kubectl apply -f  ashupod1.yaml
+pod/ashupod-2 configured
+❯ kubec get po ashupod-2  --show-labels
+zsh: command not found: kubec
+❯ kubectl  get po ashupod-2  --show-labels
+NAME        READY   STATUS    RESTARTS   AGE   LABELS
+ashupod-2   1/1     Running   0          78m   x=helloashuapp1
+❯ kubectl  get po --show-labels
+NAME                             READY   STATUS              RESTARTS   AGE   LABELS
+ashupod-2                        1/1     Running             0          78m   x=helloashuapp1
+charles-nginx-857566c655-d9c4x   1/1     Running             0          61m   app=charles-nginx,pod-template-hash=857566c655
+greg-1                           1/1     Running             0          73m   <none>
+grgrpod-1                        1/1     Running             0          73m   <none>
+japppod                          1/1     Running             0          76m   run=japppod
+japppod1                         1/1     Running             0          47m   run=japppod1
+jlrd3pod-1                       1/1     Running             0          77m   <none>
+
+```
+
+## NodePOrt 
+
+<img src="nodeport.png">
+
+## creation of service 
+
+```
+❯ kubectl  create  service nodeport  ashusvc1  --tcp 1234:80  --dry-run=client  -o yaml
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashusvc1
+  name: ashusvc1
+spec:
+  ports:
+  - name: 1234-80
+    port: 1234
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: ashusvc1
+  type: NodePort
+status:
+  loadBalancer: {}
+❯ kubectl  create  service nodeport  ashusvc1  --tcp 1234:80  --dry-run=client  -o yaml   >ashusvc1.yaml
+
+```
+
+##. 
+
+❯ kubectl  get  service
+NAME          TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+ashusvc1      NodePort    10.110.6.1       <none>        1234:31202/TCP   3m28s
+gcolesvc1     NodePort    10.99.39.249     <none>        1234:30650/TCP   3m39s
+grgrsrv1      NodePort    10.107.104.221   <none>        1234:32425/TCP   3m5s
+jappsvc       NodePort    10.108.247.161   <none>        1234:30911/TCP   3m4s
+jlrd4svc1     NodePort    10.100.242.144   <none>        3345:31880/TCP   3m8s
+kubernetes    ClusterIP   10.96.0.1  
+
+
 
 
 
