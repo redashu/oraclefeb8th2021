@@ -51,6 +51,41 @@ systemctl enable --now kubelet
 ```
   
   
-  
+## client connect 
+
+```
+root@k8s-master ~]# cd  /etc/kubernetes/
+[root@k8s-master kubernetes]# ls
+admin.conf 
+
+```
+
+
+## setting env 
+
+```
+export KUBECONFIG=/Users/fire/Desktop/admin.conf
+
+```
+
+# POd deployment 
+
+```
+❯ kubectl get  po
+NAME         READY   STATUS    RESTARTS   AGE
+ashupod-2    1/1     Running   0          63s
+muthupod-1   1/1     Running   0          17s
+vgpod-1      1/1     Running   0          53s
+❯ kubectl get  po  -o wide
+NAME         READY   STATUS    RESTARTS   AGE   IP              NODE          NOMINATED NODE   READINESS GATES
+ashupod-2    1/1     Running   0          69s   192.168.214.1   k8s-minion3   <none>           <none>
+jlrd3pod-1   1/1     Running   0          6s    192.168.214.3   k8s-minion3   <none>           <none>
+muthupod-1   1/1     Running   0          23s   192.168.54.66   k8s-minion1   <none>           <none>
+vgpod-1      1/1     Running   0          59s   192.168.214.2   k8s-minion3   <none>           <none>
+❯ kubectl get  po  -o wide
+
+
+```
+
 
 
