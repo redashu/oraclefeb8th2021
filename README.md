@@ -172,7 +172,9 @@ status:
 
 ```
 
-##. 
+## gettting service 
+
+```
 
 ❯ kubectl  get  service
 NAME          TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
@@ -183,6 +185,7 @@ jappsvc       NodePort    10.108.247.161   <none>        1234:30911/TCP   3m4s
 jlrd4svc1     NodePort    10.100.242.144   <none>        3345:31880/TCP   3m8s
 kubernetes    ClusterIP   10.96.0.1  
 
+```
 
 
 
