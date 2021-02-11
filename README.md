@@ -293,4 +293,70 @@ spec:
 
 ```
 
+## pod with custom parent process
+
+
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: helloashu
+  name: helloashu
+spec:
+  containers:
+  - image: alpine
+    name: helloashu
+    command: ["/bin/sh","-c","ping fb.com"] # parent process of container
+    resources: {}  # command is for replacing ENTRYPOINT parent process 
+  dnsPolicy: ClusterFirst
+  restartPolicy: Never
+status: {}
+
+
+```
+
+## more commands 
+
+```
+❯ kubectl replace -f alp.yml --force
+pod "helloashu" deleted
+pod/helloashu replaced
+❯ kubectl  get  po
+NAME        READY   STATUS    RESTARTS   AGE
+helloashu   1/1     Running   0          6s
+❯ kubectl  logs  -f  helloashu
+PING fb.com (157.240.218.35): 56 data bytes
+64 bytes from 157.240.218.35: seq=0 ttl=36 time=89.942 ms
+64 bytes from 157.240.218.35: seq=1 ttl=36 time=84.924 ms
+64 bytes from 157.240.218.35: seq=2 ttl=36 time=83.588 ms
+64 bytes from 157.240.218.35: seq=3 ttl=36 time=82.610 ms
+64 bytes from 157.240.218.35: seq=4 ttl=36 time=83.813 ms
+64 bytes from 157.240.218.35: seq=5 ttl=36 time=85.302 ms
+64 bytes from 157.240.218.35: seq=6 ttl=36 time=83.218 ms
+64 bytes from 157.240.218.35: seq=7 ttl=36 time=85.096 ms
+64 bytes from 157.240.218.35: seq=8 ttl=36 time=82.716 ms
+64 bytes from 157.240.218.35: seq=9 ttl=36 time=85.125 ms
+64 bytes from 157.240.218.35: seq=10 ttl=36 time=84.753 ms
+64 bytes from 157.240.218.35: seq=11 ttl=36 time=83.619 ms
+64 bytes from 157.240.218.35: seq=12 ttl=36 time=85.133 ms
+64 bytes from 157.240.218.35: seq=13 ttl=36 time=82.643 ms
+64 bytes from 157.240.218.35: seq=14 ttl=36 time=83.828 ms
+64 bytes from 157.240.218.35: seq=15 ttl=36 time=85.036 ms
+^C
+❯ kubectl exec -it helloashu -- sh
+/ # 
+/ # 
+/ # cat  /etc/os-release 
+NAME="Alpine Linux"
+ID=alpine
+VERSION_ID=3.13.1
+PRETTY_NAME="Alpine Linux v3.13"
+HOME_URL="https://alpinelinux.org/"
+BUG_REPORT_URL="https://bugs.alpinelinux.org/"
+/ # exit
+
+
+```
 
