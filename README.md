@@ -357,6 +357,66 @@ HOME_URL="https://alpinelinux.org/"
 BUG_REPORT_URL="https://bugs.alpinelinux.org/"
 / # exit
 
+```
+
+# namespace 
+
+<img src="ns.png">
+
+## creating namespace 
 
 ```
+❯ kubectl create  namespace  ashu-space
+namespace/ashu-space created
+❯ kubectl  get  ns
+NAME              STATUS   AGE
+ashu-space        Active   5s
+default           Active   5h5m
+kube-node-lease   Active   5h5m
+kube-public       Active   5h5m
+kube-system       Active   5h5m
+
+```
+
+
+## change default namespace 
+
+```
+kubectl   config set-context  --current  --namespace=ashu-space
+
+```
+
+# Replication controller (RC)
+
+<img src="rc.png">
+
+## RC 
+
+```
+apiVersion: v1
+kind: ReplicationController
+metadata:
+ namespace: ashu-space 
+ name: ashu-rc1 # name of RC 
+ labels:  # label of RC 
+  x: helloashurc
+spec: # info about POD 
+ replicas: 1  # no of Pod to be created  
+ template: # RC will use template to create POD
+  metadata:
+   labels: # label of PODs 
+    x: ashunewpod  
+  spec:
+   containers:
+   - image: dockerashu/ows:v002
+     name: ashuc11
+     ports:
+     - containerPort: 80
+     env: 
+     - name: x
+       value: app2
+  
+ ```
+ 
+
 
