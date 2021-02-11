@@ -86,6 +86,40 @@ vgpod-1      1/1     Running   0          59s   192.168.214.2   k8s-minion3   <n
 
 
 ```
+## access app using kubeconfig file 
+
+```
+❯ kubectl  port-forward   ashupod-2  1244:80
+Forwarding from 127.0.0.1:1244 -> 80
+Forwarding from [::1]:1244 -> 80
+Handling connection for 1244
+Handling connection for 1244
+
+```
+## kubeadm summary 
+
+<img src="kubeadm.png">
+
+## k8s networking 
+
+<img src="net.png">
+
+## pod ip problems 
+
+<img src="ip.png">
+
+## service use label of pod
+
+<img src="service.png">
+
+## service with LB 
+
+<img src="lbsvc.png">
+
+## service type 
+
+<img src="stype.png">
+
 
 
 
