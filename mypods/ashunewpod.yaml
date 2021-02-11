@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels: # label of POD 
+    run: ashunewpod
+  name: ashunewpod # name of pod 
+spec:
+  containers:
+  - image: dockerashu/ows:v002
+    name: ashunewpod
+    ports:
+    - containerPort: 80
+    env:  # this is for putting/replacing env variable 
+    - name: x # docker run -e x=app1  
+      value: app1 
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+ name: ashusvc3344
+spec:
+ ports:
+ - name: nonsecureport
+   port: 80 # serivce port is must 
+   protocol: TCP
+   targetPort: 80 # pod port that runs application 
+ type: NodePort
+ selector:
+  run: ashunewpod # exactly same label of POD 
+
