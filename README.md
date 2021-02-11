@@ -418,5 +418,19 @@ spec: # info about POD
   
  ```
  
+## EXpose rc 
+
+```
+ kubectl  get  rc
+NAME       DESIRED   CURRENT   READY   AGE
+ashu-rc1   1         1         1       104s
+❯ kubectl  expose rc  ashu-rc1  --type NodePort --port 80  --name x1ashu
+service/x1ashu exposed
+❯ kubectl get  svc
+NAME     TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
+x1ashu   NodePort   10.103.213.195   <none>        80:32401/TCP   5s
+
+```
+
 
 
