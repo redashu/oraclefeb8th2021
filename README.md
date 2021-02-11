@@ -188,5 +188,109 @@ kubernetes    ClusterIP   10.96.0.1
 ```
 
 
+## NEw pod 
+
+```
+❯ kubectl   run  ashunewpod --image=dockerashu/ows:v002 --port 80  --dry-run=client -o yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: ashunewpod
+  name: ashunewpod
+spec:
+  containers:
+  - image: dockerashu/ows:v002
+    name: ashunewpod
+    ports:
+    - containerPort: 80
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+❯ kubectl   run  ashunewpod --image=dockerashu/ows:v002 --port 80  --dry-run=client -o yaml  >ashunewpod.yaml
+
+```
+
+## adding env 
+
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels: # label of POD 
+    run: ashunewpod
+  name: ashunewpod # name of pod 
+spec:
+  containers:
+  - image: dockerashu/ows:v002
+    name: ashunewpod
+    ports:
+    - containerPort: 80
+    env:  # this is for putting/replacing env variable 
+    - name: x # docker run -e x=app1  
+      value: app1 
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+
+
+```
+
+# Adding pod and svc in same yaml 
+
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels: # label of POD 
+    run: ashunewpod
+  name: ashunewpod # name of pod 
+spec:
+  containers:
+  - image: dockerashu/ows:v002
+    name: ashunewpod
+    ports:
+    - containerPort: 80
+    env:  # this is for putting/replacing env variable 
+    - name: x # docker run -e x=app1  
+      value: app1 
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+ name: ashusvc3344
+spec:
+ ports:
+ - name: ashport
+   port: 1234 # serivce port 
+   protocol: TCP
+   targetPort: 80 # pod port that runs application 
+ type: NodePort
+ selector:
+  run: ashunewpod # exactly same label of POD 
+
+
+
+```
+
+## Exposing pod to create service 
+
+```
+7085  kubectl  expose  pod  ashunewpod  --type NodePort  --port 1234 --target-port 80 --name ashusvc099 
+ 7086  kubectl  expose  pod  ashunewpod  --type NodePort  --port 80  --name ashusvc011 
+
+
+```
 
 
