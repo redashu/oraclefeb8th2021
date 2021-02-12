@@ -375,3 +375,28 @@ status: {}
 
 
 ```
+## service account 
+
+```
+ kubectl get  serviceaccount
+NAME      SECRETS   AGE
+default   1         25h
+❯ kubectl get  serviceaccount  -n kube-public
+NAME      SECRETS   AGE
+default   1         30h
+❯ kubectl get  sa  -n kube-public
+NAME      SECRETS   AGE
+default   1         30h
+❯ 
+❯ kubectl get  sa
+NAME      SECRETS   AGE
+default   1         25h
+❯ kubectl get  secret
+NAME                  TYPE                                  DATA   AGE
+ashusec               kubernetes.io/dockerconfigjson        1      24h
+default-token-zf29w   kubernetes.io/service-account-token   3      25h
+
+```
+
+<img src="svc.png">
+
