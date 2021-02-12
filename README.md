@@ -245,3 +245,41 @@ status: {}
 
 
 ```
+
+## MUlti container POd example 
+
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: mypod1
+  name: mypod1
+spec:
+  volumes: # IS for creating volume 
+  - name: ashuvol1 # name of volume 
+    emptyDir: {}  # blank it will create any random directory 
+  containers:
+  - image: alpine
+    name: mypod1
+    volumeMounts: # mounting volume  created from above
+    - name: ashuvol1 # same name of volume 
+      mountPath: /mnt/oracle # this directory will be created 
+    command: ["/bin/sh","-c","while true;do echo Hello k8s >>/mnt/oracle/data.txt;sleep 5;done"]
+    resources: {}
+  - image: nginx # web app container 
+    name: ashuc1
+    ports:
+    - containerPort: 80
+    volumeMounts: # same volume 
+    - name: ashuvol1
+      mountPath: /usr/share/nginx/html/ # documentroot 
+
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+
+
+```
+
