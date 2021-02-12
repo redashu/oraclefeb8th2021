@@ -164,3 +164,28 @@ kubectl  set  image  deployment helloashu owsfinal=dockerashu/owsfinal:v002
 deployment.apps/helloashu rolled back
 
 ```
+# history of deployment 
+
+```
+7372  kubectl  apply -f myapp.yml -n ashu-space 
+ 7373  kubectl  get  deploy 
+ 7374  kubectl  get  rs
+ 7375  kubectl  get  po 
+ 7376  kubectl  expose deployment helloashu  --type NodePort  --port 1234 --target-port 80 --name ashusvc123 
+ 7377  kubectl get svc 
+ 7378  kubectl scale deployment helloashu --replicas=3
+ 7379  kubectl  get  po 
+ 7380  history
+ 7381  docker build -t  dockerashu/owsfinal:v002  https://github.com/redashu/oracletest.git\#main
+ 7382  docker push dockerashu/owsfinal:v002 
+ 7383  kubectl get deploy
+ 7384  kubectl describe  deploy helloashu 
+ 7385  kubectl  set  image  deployment helloashu owsfinal=dockerashu/owsfinal:v002 
+ 7386  kubectl  get  po 
+ 7387  history
+ 7388  kubectl describe  deploy helloashu 
+❯ kubectl rollout undo  deployment helloashu
+deployment.apps/helloashu rolled back
+
+
+```
