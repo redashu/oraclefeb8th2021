@@ -189,3 +189,59 @@ deployment.apps/helloashu rolled back
 
 
 ```
+
+
+## End deployment with LB & DNS 
+
+<img src="lb.png">
+
+## service 
+
+```
+ kubectl expose deploy helloashu  --type LoadBalancer --port 1245 --target-port 80 --name okcool
+service/okcool exposed
+❯ 
+❯ kubectl get svc
+NAME         TYPE           CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+ashusvc123   NodePort       10.102.158.104   <none>        1234:31394/TCP   61m
+nimitsvc1    NodePort       10.101.215.68    <none>        1234:31348/TCP   37m
+okcool       LoadBalancer   10.104.188.229   <pending>     1245:32331/TCP   5s
+
+```
+
+##  Just ingress thing 
+
+<img src="ingress.png">
+
+# storage in k8s 
+
+<img src="st.png">
+
+## emptyDir type 
+
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: mypod1
+  name: mypod1
+spec:
+  volumes: # IS for creating volume 
+  - name: ashuvol1 # name of volume 
+    emptyDir: {}  # blank it will create any random directory 
+  containers:
+  - image: alpine
+    name: mypod1
+    volumeMounts: # mounting volume  created from above
+    - name: ashuvol1 # same name of volume 
+      mountPath: /mnt/oracle # this directory will be created 
+    command: ["/bin/sh","-c","while true;echo Hello >>/mnt/oracle/data.txt;sleep 5;done"]
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+
+
+```
