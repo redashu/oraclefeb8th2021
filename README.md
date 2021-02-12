@@ -283,3 +283,95 @@ status: {}
 
 ```
 
+## deploy
+
+```
+ kubectl  get po
+NAME     READY   STATUS    RESTARTS   AGE
+mypod1   2/2     Running   0          119s
+❯ 
+
+░▒▓ ~/Desktop/mypods ········································· kubernetes-admin@kubernetes/ashu-space ⎈  02:59:37 AM ▓▒░─╮
+❯ kubectl exec -it  mypod1 -c  ashuc1  -- bash                                                                             ─╯
+abc.json         ashudep1.yaml    ashupod1.yaml    ashusvc1.yaml    myapp.yml        pod3.yaml                       
+alp.yml          ashunewpod.yaml  ashurc.yaml      emptype.yml      p.yml                                          
+❯ kubectl exec -it  mypod1 -c  ashuc1  -- bash
+root@mypod1:/# 
+root@mypod1:/# cat  /etc/os-release 
+PRETTY_NAME="Debian GNU/Linux 10 (buster)"
+NAME="Debian GNU/Linux"
+VERSION_ID="10"
+VERSION="10 (buster)"
+VERSION_CODENAME=buster
+ID=debian
+HOME_URL="https://www.debian.org/"
+SUPPORT_URL="https://www.debian.org/support"
+BUG_REPORT_URL="https://bugs.debian.org/"
+root@mypod1:/# cd  /usr/share/nginx/html/
+root@mypod1:/usr/share/nginx/html# ls
+data.txt
+
+
+```
+
+## creating service 
+
+```
+❯ kubectl get po
+NAME     READY   STATUS    RESTARTS   AGE
+mypod1   2/2     Running   0          5m15s
+❯ kubectl expose pod mypod1  --type NodePort --port 80
+service/mypod1 exposed
+❯ kubectl get svc
+NAME     TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
+mypod1   NodePort   10.104.69.200   <none>        80:31279/TCP   6s
+
+```
+
+## portainer deployment 
+
+```
+kubectl  create deployment  ashumin3  --image=portainer/portainer --dry-run=client -o yaml  >portainer.yml
+
+```
+## portainer 
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashumin3
+  name: ashumin3
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ashumin3
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ashumin3
+    spec:
+      nodeName: k8s-minion3
+      volumes: # only for volume creation 
+      - name: ashuwebvol
+        hostPath: # docker socket 
+         path: /var/run/docker.sock
+         type: Socket 
+      containers:
+      - image: portainer/portainer
+        name: portainer
+        volumeMounts:
+        - name: ashuwebvol
+          mountPath: /var/run/docker.sock 
+        ports:
+        - containerPort: 9000
+        resources: {}
+status: {}
+
+
+```
