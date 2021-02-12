@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  namespace: ashu-space # namespace info 
+  creationTimestamp: null
+  labels:
+    run: helloashu
+  name: helloashu
+spec:
+  containers:
+  - image: alpine
+    name: helloashu
+    command: ["/bin/sh","-c","ping fb.com"] # parent process of container
+    resources: {}  # command is for replacing ENTRYPOINT parent process 
+  dnsPolicy: ClusterFirst
+  restartPolicy: Never
+status: {}

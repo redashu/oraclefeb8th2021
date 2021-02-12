@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+ namespace: ashu-space 
+ name: ashu-rc1 # name of RC 
+ labels:  # label of RC 
+  x: helloashurc
+spec: # info about POD 
+ replicas: 2  # no of Pod to be created  
+ template: # RC will use template to create POD
+  metadata:
+   labels: # label of PODs 
+    x: ashunewpod  
+  spec:
+   containers:
+   - image: dockerashu/ows:v002
+     name: ashuc11
+     ports:
+     - containerPort: 80
+     env: 
+     - name: x
+       value: app2
+  

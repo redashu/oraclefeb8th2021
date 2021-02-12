@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashumin3
+  name: ashumin3
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ashumin3
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ashumin3
+    spec:
+      nodeName: k8s-minion3
+      volumes: # only for volume creation 
+      - name: ashuwebvol
+        hostPath: # docker socket 
+         path: /var/run/docker.sock
+         type: Socket 
+      containers:
+      - image: portainer/portainer
+        name: portainer
+        volumeMounts:
+        - name: ashuwebvol
+          mountPath: /var/run/docker.sock 
+        ports:
+        - containerPort: 9000
+        resources: {}
+status: {}

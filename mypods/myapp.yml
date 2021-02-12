@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: helloashu
+  name: helloashu # name of deployment 
+spec:
+  replicas: 1 # no of pod 
+  selector:
+    matchLabels:
+      app: helloashu
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: helloashu
+    spec:
+      containers:
+      - image: dockerashu/owsfinal:v001
+        name: owsfinal # name of container 
+        ports:
+        - containerPort: 80
+        resources: {}
+status: {}

@@ -1,0 +1,13 @@
+apiVersion: v1 # connecting kube-apiserver 
+kind: Pod  # requesting about POd 
+metadata: # more info about pod 
+ name: ashupod-2  # name of Pod 
+ labels:
+  x: helloashuapp1 # label of my POD 
+spec:
+ nodeName: k8s-minion3 # manual scheduling 
+ containers:  # info about Docker image & container 
+ - image: nginx # image from Docker HUB 
+   name: ashuc2 # name of container 
+   ports: # application port inside container 
+   - containerPort: 80

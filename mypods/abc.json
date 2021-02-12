@@ -1,0 +1,28 @@
+{
+    "kind": "Pod",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "ashupod3",
+        "creationTimestamp": null,
+        "labels": {
+            "run": "ashupod3"
+        }
+    },
+    "spec": {
+        "containers": [
+            {
+                "name": "ashupod3",
+                "image": "nginx",
+                "ports": [
+                    {
+                        "containerPort": 80
+                    }
+                ],
+                "resources": {}
+            }
+        ],
+        "restartPolicy": "Always",
+        "dnsPolicy": "ClusterFirst"
+    },
+    "status": {}
+}
